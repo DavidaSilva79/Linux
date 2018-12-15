@@ -1,0 +1,598 @@
+#Git
+controle de versionamento / gerenciar versoes / sistema de controle de versao / estados x diferenças 
+avançar,voltar 
+
+#GitHub
+serviço web para armazenar projetos versionados em git
+
+#repositorio local x remoto
+
+=============================================================================
+comandos git
+# git guarda informação em 3 lugares
+>>>>git config de todo o sistema
+>>>>git config do usuario
+>>>>git config do projeto
+
+
+
+------configuraçoes-----------
+
+#git config do usuario global
+#comando para config usuario e email
+
+git config --global user.name "Davi Silva"
+
+git config --global user.email "rasdavi@hotmail.com"
+
+#comando para mostrar usuario e email
+
+git config  user.name
+git config  user.email 
+
+
+#passar editor de texto padrao / por padrao usa o vim
+
+git config --global core.editor vim/nano e etc
+
+#mostar lista de config
+
+git config --listg
+
+
+------- inicializar um repositorio----------
+inicilizar no local desejado a estrutura do git
+
+# criar pasta do projeto na pasta do git
+exemplo
+mkdir git-course ou qualquer nome
+
+# inicializar um repositorio git / estando no diretorio  desejado no caso git-course
+# cria um diretorio .git na pasta escolhida  com a estrutura do git
+  obs: dir .git oculto usar comando ls -la para ver
+
+git init
+
+>>>> em seguida criar arquivo Readme.me obrigatorio com o comando
+
+vim Readme.me
+
+
+------ dicas editor vim------------
+
+#chamar editor de texto vim
+
+vim
+
+# abrir arquivo com vim
+
+vim nome_do_aquivo.alguma coisa
+
+# criar arquivo  no vim
+# digitar a chamada do vim e nome para o arquivo e depois salva-lo
+# no caso do txt .txt se nao colocar nada vai fica temporario .swp definitivo em .md
+
+vim nome_do_arquivo e depois salva-lo
+
+#apenas sair do vim
+
+:q
+
+#sair e salvar arquivo e sua modificao 
+
+:wq
+
+#habilitar modo edição
+digitar tecla "i"
+
+#sair do modo edição
+esc
+
+----------ciclo de vida dos aquivos git e seus estados status---------
+
+>>> 1 untracked/nao marcado: esta na pasta que vc inicializou o repositorio 
+    porem nao foi adicionado ao repositorio git
+
+>>> 2 unmodified/new : foi adicionado ao repositorio git inicilizado na pasta
+    porem nao foi feita nenhuma alteraçao no arquivo, ja esta no momento staged 
+    se caso quiser ja commitar e criar uma nova versao
+
+>>> 3 modified/modificado ou editado : foi editado do estado new e precisa ser 
+    adicionado novamente a area staged para ser possivel commita-lo se
+    tornar uma nova versao 
+
+>>> 4 estaged/modificado e pronto para nova versao: estado depois de modificado 
+    que fica em uma area chamada staged pronta pra ser commitad e se tornar uma
+    nova versao ou seja volta para o passo 2 unmodified/new com 
+    as modificacoes salvas
+ 
+
+
+comandos 
+
+#estado do repositorio no momento atual
+
+git status
+
+#adicionar arquivo que esta no diretorio do repositorio mais nao foi adicionado 
+ ainda ou adicionar do modificado para ficar pronto para ser commitado(staged) 
+ e criar nova versao
+ 
+git add nome_do_arquivo
+
+# commitar criar nova versao de um arquivo em staged
+  entre aspas e mensagem sobre o que foi atualizado no arquivo
+  caso queira criar outra versao abrir e modificar o mesmo e seguir o procedimento
+  do passo  modified
+  obs: cada commit tem uma hash(id da versao) padrao para identificar o commit
+  e fazer uma busca do mesmo se precisar
+
+git commit -m "Add Readme.md"
+
+
+# git commit -am "nome" esse comando commita em um arquivo modificado direto sem precisar
+  de usar o comando git add novamente
+
+git commit -am "nome"
+  
+
+# git commit -am "nome" esse comando commita em um arquivo modificado direto sem precisar
+  de usar o comando git add novamente
+
+git commit -am "nome"
+
+
+--------------------logs----------------------
+
+#git log mostra a hash(id) do commit da versao
+ a data e nome e email do autor
+
+git log
+
+
+#git log --decorate ,para mostrar informacoes de branch
+
+git log --decorate
+
+
+
+#filtrar log por autor
+
+git log --author="davi da silva"
+
+
+#mostra em ordem alfabetica a contribuicao no respositorio de cada autor 
+ quantos commites e quais foram eles
+
+git shortlog
+
+
+
+#filtrar por quantidade de commits e autores 
+
+git shortlog -sn
+
+
+
+# mostra o grafico das versoes 
+
+git log --graph
+
+
+# mostrar o que foi alterado na versao/commit o sina "+"
+  indica o que foi adicionado ou alterado e "-" o que foi removido
+
+git show hash/id
+
+exemplo git show  d319bbfd374f8207ac6ba199d2b9ba66916f7d3c
+
+
+
+
+
+-------Visualizando o diff-----------------
+
+#git diff mostra o que foi alterado no arquivo em estado modified para verificacao
+ antes de commitar /revisar alteracao
+
+git diff
+
+# mostrar somente o nome do arquivo modificado antes de commitalo no caso de ter um lista
+  de arquivos no diretorio do repositorio
+obs: tbm somente em estado modified para staged nao vale
+
+git diff --name-only
+
+
+
+ # git diff entre 2 commits ou 2 branchs
+
+ exemplos
+
+ git diff d2d3137 66d368f
+
+ git diff master origin/master
+
+
+
+
+
+
+
+
+----------------Desfazendo coisas---------------------
+comandos para desfazer modificacoes de versoes voltar versoes e etc
+
+
+
+# comando para desfazer alteraçao em estado modified
+
+git checkout nome_do_arquivo
+
+
+
+# comando para desfazer alteracao em estado pos modified (staged)
+  ja usado o comando git add, o comando tira o arquivo pronto para commitar
+  da area staged , nesse caso vai voltar para o modified, em seguida executar 
+  o checkout normalmente
+
+git reset HEAD nome_do_arquivo
+
+
+
+>>>comandos para desfazer alteracao depois que o arquivo ja estiver commitado 
+ em uma nova versao 
+
+ obs: sempre passando a hash/id da versao anterior a que vc que alterar
+
+git reset --soft: desfaz o commit/versao e volta o arquivo ja para o staged pronto
+    para commitar a mudanca novamente
+
+exemplo
+  == git reset --soft d319bbfd374f8207ac6ba199d2b9ba66916f7d3c
+
+git reset --mixed: desfaz o commmit/versao e volta o arquivo para o estado modified
+    para ser adicionado ao stage e commitar possivel ver as modficacoes com o comando
+    git diff ainda
+
+exemplo
+    == git reset--mixed d319bbfd374f8207ac6ba199d2b9ba66916f7d3c
+
+git reset --hard: desfaz o commmit/versao e volta o arquivo de forma completa para
+      ultima versao deletando o versao atual
+
+exemplo
+    == git reset --hard d319bbfd374f8207ac6ba199d2b9ba66916f7d3c
+
+
+OBS: caso usar o comando reset e tentar enviar um push para o remoto vai dar conflito e nao vai subir, vai ter que fazer um pull novamente
+     e nao vai adiantar nada, uma forma e forcar com o 
+# git push master -f ou --force
+     que vai forcar no remoto e substitui porem vai atrapalhar quem ja baixou o atual
+     uma solucao mais sabia e fazer outro commit com o conteudo anterior ao erro consultando logs com o diff
+     por exemplo
+
+     ou uma forma mais sabia e fazer rapidamente um git revert que vai conservar no log as mudancas para trabalhar no erro 
+     posteriormente
+---------------------------------------------------------------------------------------------------
+ 
+>>> comando para reverter arquivo ja commitado sem perder a modificacao feita
+    no caso de um erro revert o erro porem o erro continua no historico de commits
+    para trabalhar no erro e conseguir ver o erro sem discartar o mesmo
+
+# comando revert no commit alvo a ser resetado diferente dos de cima que tem que ser no anterior ao alvo
+
+ git revert hash_do_commit
+
+exemplo
+
+git revert cf3fca39de9649ef12f858f784acf5492aa74ebf
+
+
+-------comandos-GitHub-------------------
+
+comandos para criar chave ssh
+
+$ ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+
+This creates a new ssh key, using the provided email as a label.
+
+Generating public/private rsa key pair.
+When you're prompted to "Enter a file in which to save the key," press Enter. This accepts the default file location.
+
+Enter a file in which to save the key (/c/Users/you/.ssh/id_rsa):[Press enter]
+At the prompt, type a secure passphrase. For more information, see "Working with SSH key passphrases".
+Enter passphrase (empty for no passphrase): [Type a passphrase]
+Enter same passphrase again: [Type passphrase again]
+
+
+#comandos para achar a chave no terminal e colar ela no site GitHub em settings e depois SSH and GPG keys 
+ escolher um nome para o pc conectado
+
+$ cd ~/.ssh/
+
+$ ls
+id_rsa  id_rsa.pub
+
+$cat id_rsa.pub
+
+
+
+#comando para conectar respositorio local no remoto *so um exemplo melhor usar do site na hora 
+  obs: onde esta origin pode por o nome que quiser , se for criar outros para nao dar conflito
+ 
+  git remote add origin https://github.com/DavidaSilva79/git-course.git
+  
+  git push -u origin master
+
+
+
+# atualizar modificacoes feitas no repositorio local para o remoto * a questao do origin é a 
+  mesma do de cima
+
+
+  git push  origin master
+
+
+#comando para clonar repositorio do git hub
+
+ git clone + ssh ou http do repositorio e o nome da pasta que vc vai criar  exemeplo 
+ 
+ $ git clone git@github.com:DavidaSilva79/Redux.git clone
+
+
+#sobre o fork fazer depois clonar para o rep local alterar e subir obs:temp
+
+
+#git remote lista reps remotos e remote -v mostra suas urls
+
+git remote
+
+ou
+
+git remote -v
+
+
+>>>>> atualizar repositorio local com att do remoto pull
+      obs: ele jaz o merge sem voce olhar as att, se quiser olhar antes  usa o fetch 
+
+exemplo
+
+git pull origin master
+
+
+>>>> git fetch faz o pull pela metade para voce olhar anter de fazer merge, 
+     ele tras o ponteiro do branch remoto com suas att e commits
+
+git fitch
+
+# para comparar em seguida antes do merge 
+  
+exemplo 
+
+ git diff master origin/master
+
+# entao se quiser fazer o merge 
+
+exemplo
+ 
+ gir merge origin/master
+
+
+
+----------------------branch----------------------
+ideia de criar ponteiro para um novo ramo para trabalhar uma feature separa do projeto 
+principal ou defeito ou correcao de forma independente da linha principal
+
+ponteiro que aponta para o commit atual, o master e o padrao pode se criar outro para 
+nao dar conflito se mais de uma pessoa usa o mesmo ponteiro
+
+cada branch criado novo pega referencia do branch Master atual ,e cria a partir dele outros
+branchs seguindo sua propria linha independente do branch master , atualizacoes feitas no
+master nao seram vistar nesse branch criado e nem o master  vera atualizacoes do branch
+criado , para isso deve se unir branch com merge ou rebase
+
+obs: uma boa ideia e usar o branch master como canal de comunicacao push pull
+
+
+#comando para criar um novo branch
+ 
+ git checkout -b nome_do_branch
+
+# comando branch mostra os branchs existentes e em "*" o branch atual
+
+ git branch
+
+# comando para navegar entre branch
+ 
+ git checkout nome_do_branch
+
+# comando para deletar um branch
+
+ git branch -D nome_do_branch
+
+
+>>> unindo branchs atravez do merge/mesclar que cria uma arvore e mantem a cronologia, porem usa um commit extra
+   
+    # comando executado do branch master para unir o branch desejado atraves do merge
+  obs: quando nao há divergencia ele faz apenas uma fast  forward movendo o ponteiro 
+  para ultima posicao do branch alvo
+
+ caso houver divergencia abrir o arquivo divergente e resolver manualmente
+
+ git merge nome_do_branch_alvo
+
+>>> unindo branchs atraves do rebase que coloca commits do branch desejado no comeco
+    da fila do branch master , isso tudo de forma linear sem criar commit extra sem arvore
+   
+    # comando executado do branch master para unir o branch desejado atraves do merge
+
+  git rebase nome_do_branch_alvo
+
+
+
+obs: evitar o merge para nao gerar muitas arvores usar merge e caso 
+     de adicionar novas features e quer saber um historico preciso
+     
+     usar na maioria das vezes o rebase, quando estiver trabalhando e adicionado coisas
+     usar sempre no final quando for atualizar repositorio remoto "pull"
+
+
+#deletar branch remoto, no caso abaixo "new" e o nome do branch a se deletar
+
+ git push origin :new
+
+      
+
+
+------------------.gitignore----------------
+um arquivo para adicionar alguns elementos do projeto particular do usuario que nao se deseja trackear/seguir 
+para repositorios remotos por que nao tem necessidade ou por questao particulares de configuracao de cada
+maquina ou privacidade com senhas e etc.
+
+obs:se criar o projeto dentro de um diretorio inicializado como repositorio git, por exemplo do java
+ele mesmo ja cria um gitignore por padrao
+
+# para criar o arquivo .gitignore basta criar um arquivo no vim com esse nome
+  e indicar os arquivos em especifico que se deseja ignorar por exemplo teste.class ou teste.zip  
+  ou usar o "*" antes para ignorar todos os arquivos com uma certa extensao como por exemplo *.class ou *.zip 
+  segue abaixo link com templates do proprio github para projetos de varios linguagens de programacao
+  assim como a documentacao do gitignore
+
+https://github.com/github/gitignore
+
+https://git-scm.com/docs/gitignore
+
+# para fazer o teste crie um arquivo txt ou algum outro sem adicionalo ao repositorio com add e olhe o git status
+  ele vai aparecer para adicionar  como untracked se vc criar um .gitignore com a extensao ou nome do arquivo ele 
+  vai sumir de arquivos untracked para adicionar
+
+
+------------------------git stash---------------------------------
+o git stash guarda uma modificao que nao foi commitada , que vc nao deseja commitala  agora em um arquivo para ser aplicada mais
+tarde assim sumindo o estado modified do arquivo por hora e mantendo seu estado antes da alteracao quando quiser modificar novamente
+
+# comando para guardar uma modificacao nao commitada de algum arquivo 
+
+git stash
+
+# comando para aplicar modificao guardada no arquivo
+ 
+git stash apply
+
+# comando para listar modificacoes guardadas no stash
+
+git stash list
+
+# comando para limpar o stash
+
+git stash clear
+
+# comando para guardar o stash junto com uma anotacao 
+
+git stash save "anotacao" 
+
+# comando para aplicar um stash em especifico
+
+exemplo
+ 
+ git stash apply stash@{0}
+
+# comando para apagar do list apenas um stash especifico nao todos como o clear
+
+exemplo
+
+git stash drop stash@{0}
+
+
+----------------- criar alias de comando-----------------
+criar um atalho para abreviar um comando 
+
+#exemplo em vez de digitar git status , digita apenas git s
+
+git config --global alias.s status 
+
+
+-------------------versionando com Tags-------------------------
+cria uma anotacao no ponto do commit atual com o fechamento da versao/realease 
+ou outra informacao, pra subir no github como release ja com uma opcao de download dele
+
+# crianca da tag na frente do -a  passa a versao em numero exemplo "1.0.0"
+  e na frente do -m a informacao exemplo "nova versao"
+
+git tag -a 1.0.0 -m "nova versao"
+
+# para subir a tag para o repositorio remoto 
+
+git push origin master --tags
+
+# comando para ver as tags ja feita
+
+git tag
+
+# comando para apagar tag no repositorio local
+
+git tag -d numero_da_tag
+
+exemplo
+
+git tag -d 1.0.1
+
+# comando para apagar tag do repositorio remoto
+
+git push nome_do_repositorio_remoto :numero da tag
+
+exemplo
+
+$ git push origin :1.0.0
+
+
+
+
+
+---------outros comandos---------------
+
+#mostrar a versao do git
+
+git version
+
+
+# se deletar a pasta oculta .git ele deixa de ser um repo
+
+>>>>criar arquivo de texto ou outros a partir do echo
+
+echo "conteudo" > nome_do_arquivo.extensao 
+
+exemplo
+
+echo "# davi" >> README.md
+
+echo davi > davi.txt
+
+
+>>>> caso quiser adicionar varios arquivos de uma vez 
+
+git add -A 
+ ou
+git add -all
+
+>>> -m do commit e para indicar que vai uma msg junto e -am add e msg em seguida
+
+
+#git log --oneline mostra logs de maneira simplificada/uma linha apenas, para quando a muitos logs
+
+ git log --oneline
+
+
+>>>comando para ver commits de todos os branchs e nao apenas o atual/head
+
+ git log --decorate --all
+
+ou 
+
+ git log --oneline --decorate --all
+
+
+>> resolver conflito no rebase nao commitar depois de resolver apenas add se nao vai dar pau
+  diferente do merge que tem que commitar tbm
+
